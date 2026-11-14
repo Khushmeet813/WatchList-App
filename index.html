@@ -471,6 +471,50 @@ dialog#vw{background:#0b0b10;backdrop-filter:none;-webkit-backdrop-filter:none}
 @media(prefers-reduced-motion:reduce){.ss{display:none}.bstars{animation:none}}
 #boot .brand svg{animation:bootp 1.6s ease-in-out infinite}
 @keyframes bootp{50%{transform:scale(1.08)}}
+
+/* ===== collection page: banner + wide cards ===== */
+.cban{position:relative;display:flex;height:clamp(150px,22vw,250px);border-radius:12px;overflow:hidden;background:#0a0a0a;border:1px solid var(--line)}
+.cban img,.cban i{flex:1 1 0;min-width:0;height:100%;object-fit:cover;object-position:center 22%;display:block;filter:brightness(.78) saturate(1.1);pointer-events:none}
+.cbf{position:absolute;inset:0;background:linear-gradient(to top,rgba(9,9,11,.96),rgba(9,9,11,0) 62%),linear-gradient(90deg,rgba(9,9,11,.45),transparent 30%,transparent 70%,rgba(9,9,11,.45))}
+.chero{display:flex;gap:clamp(14px,2vw,28px);align-items:flex-start;padding:0 clamp(12px,2.4vw,34px);margin-top:calc(-1 * clamp(56px,8vw,96px));position:relative}
+.cpo{flex:none;width:clamp(104px,13vw,170px);aspect-ratio:2/3;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.22);background:#111;box-shadow:0 16px 44px rgba(0,0,0,.75),0 0 40px rgba(112,12,14,.45)}
+.cpo img,.cpo i{width:100%;height:100%;object-fit:cover;display:block}
+.cmeta{padding-top:clamp(62px,8.6vw,104px);min-width:0}
+.cmeta h2{margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:700;letter-spacing:-.01em}
+.cmeta p{margin:8px 0 6px;color:#d4d4d8;font-size:clamp(13px,1.2vw,15px);max-width:62ch}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px;margin:28px 0 56px}
+.card.wc{aspect-ratio:auto;display:flex;flex-direction:column;position:relative;border-radius:10px;min-height:0}
+.card.wc:hover{transform:none}
+.wc .wtop{position:relative;height:104px;overflow:hidden;flex:none;background:#0a0a0a}
+.card.wc .wbk{position:absolute;inset:-10px;width:calc(100% + 20px);height:calc(100% + 20px);object-fit:cover;object-position:center 20%;filter:blur(5px) brightness(.8) saturate(1.2)}
+.wc .wfade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.05),rgba(10,10,14,.9))}
+.wc .save{top:8px;right:8px;width:34px;height:34px}
+.wc .save svg{width:17px;height:17px}
+.wc .wpo{position:absolute;left:12px;top:52px;width:70px;aspect-ratio:2/3;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.28);box-shadow:0 8px 22px rgba(0,0,0,.7);background:#111;z-index:2}
+.card.wc .wpo img,.wc .wpo i{position:static;inset:auto;width:100%;height:100%;object-fit:cover;display:block}
+.wc .wi{padding:10px 12px 12px 94px;min-height:84px}
+.wc .wt{font-weight:700;font-size:15px;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.wc .wm{color:var(--mute);font-size:12.5px;margin-top:4px}
+.wc .wd{color:#d4d4d8;font-size:12.5px;margin-top:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.wc .wst{display:inline-block;margin-top:7px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:600;background:rgba(112,12,14,.55);border:1px solid #8f1115;color:#fff}
+.card.wc.ghost{position:fixed;left:0;top:0;z-index:300;margin:0;pointer-events:none;opacity:.95}
+@media(max-width:640px){.chero{flex-direction:column;margin-top:-60px}.cmeta{padding-top:0}.cpo{width:112px}}
+/* ===== v7: hero meta alignment on phones + wide All Titles cards ===== */
+.hmeta{flex-wrap:wrap;gap:6px 12px;justify-content:flex-start;align-items:center}
+.hmeta>span{white-space:nowrap;flex:none}
+.hbody{text-align:left}
+.htitle{overflow-wrap:anywhere}
+.wgrid{margin:20px 0 56px}
+@media(max-width:700px){
+ .hero{align-items:stretch}
+ .hbody{width:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end}
+ .hmeta{font-size:13px;gap:6px 10px}
+ .htitle{font-size:clamp(26px,8vw,36px);margin:10px 0}
+ .hbody .chips{gap:6px;margin-bottom:12px}
+ .hbody .chip{padding:5px 12px;font-size:13px}
+ .hthumbs{width:100%}
+ .wgrid{gap:12px;margin:16px 0 36px}
+}
 </style>
 </head>
 <body>
@@ -661,6 +705,11 @@ function filt(list,s){
 function card(i){return `<div class="card" tabindex="0" data-id="${i.id}">${i.img?`<img src="${i.img}" alt="${esc(i.title)} poster">`:""}<div class="shade"></div>
 <button class="save ${STL(i.status)?"on":""}" ${STL(i.status)?`data-s="${i.status}"`:""} data-w="${i.id}" aria-label="${STL(i.status)?"Status: "+STL(i.status)+". Change status":"Set watch status"}" aria-haspopup="menu">${ICON.bm(!!STL(i.status))}</button>
 <div class="info"><div class="t">${esc(i.title)}</div><div class="y">${i.year}</div></div></div>`}
+function wcard(i){const g=(i.genres||[]).slice(0,3).join(" \u00b7 "),st=STL(i.status);
+  return `<div class="card wc" tabindex="0" data-id="${i.id}"><div class="wtop">${i.img?`<img class="wbk" src="${i.img}" alt="">`:""}<div class="wfade"></div>
+<button class="save ${st?"on":""}" ${st?`data-s="${i.status}"`:""} data-w="${i.id}" aria-label="${st?"Status: "+st+". Change status":"Set watch status"}" aria-haspopup="menu">${ICON.bm(!!st)}</button></div>
+<div class="wpo">${i.img?`<img src="${i.img}" alt="${esc(i.title)} poster">`:`<i></i>`}</div>
+<div class="wi"><div class="wt">${esc(i.title)}</div><div class="wm">${TYL(i.type)} \u00b7 ${i.year}${i.lang?" \u00b7 "+esc(i.lang):""}</div><div class="wd">${esc(g)}</div>${st?`<span class="wst">${esc(st)}</span>`:""}</div></div>`}
 function row(id,title,base,emptyMsg){
   const s=S[id],list=filt(base,s),pages=Math.max(1,Math.ceil(list.length/pp));
   if(s.page>=pages)s.page=pages-1;
@@ -810,7 +859,7 @@ function moveInCol(id,to){
   c.ids.splice(k,0,c.ids.splice(f,1)[0]);saveCol(c);render()}
 function beginDrag(s){
   if(dg!==s||s.on)return;s.on=true;const r=s.c.getBoundingClientRect(),g=s.c.cloneNode(true);
-  g.className="card ghost";g.style.cssText=`width:${r.width}px;height:${r.height}px;left:0;top:0;transform:translate3d(${r.left}px,${r.top}px,0) scale(1.06) rotate(2deg)`;document.body.append(g);
+  g.className=s.c.className.replace(/\bdragging\b|\bover\b/g,"").trim()+" ghost";g.style.cssText=`width:${r.width}px;height:${r.height}px;left:0;top:0;transform:translate3d(${r.left}px,${r.top}px,0) scale(1.06) rotate(2deg)`;document.body.append(g);
   s.g=g;s.dx=s.x-r.left;s.dy=s.y-r.top;s.cx=s.x;s.cy=s.y;s.overEl=null;document.documentElement.style.scrollBehavior="auto";s.raf=requestAnimationFrame(dragFrame);s.c.classList.add("dragging");document.body.classList.add("dnd");if(navigator.vibrate)navigator.vibrate(15)}
 function endDrag(drop){
   if(!dg)return;clearTimeout(dg.t);const s=dg;dg=null;if(!s.on)return;
@@ -862,10 +911,15 @@ function drawCols(){
       return `<button class="ctile" data-col="${c.id}"><div class="cover">${[0,1,2,3].map(k=>L[k]&&L[k].img?`<img src="${L[k].img}" alt="">`:`<i></i>`).join("")}</div><div class="cn">${esc(c.name)}</div><div class="cs">${colType==="all"&&c.type?TL(c.type)+" \u00b7 ":""}${nt(L.length)}</div></button>`}).join("")}</div>`
     :`<div class="empty">${colType==="all"?"No collections yet. Create one to group titles together, like \u201cWeekend binge\u201d or \u201cKorean dramas\u201d.":"No "+TYL(colType).toLowerCase()+" collections yet. Tap \u201cAdd collection\u201d to create your first one."}</div>`);
     return}
-  const c=cols.find(x=>x.id===colId),L=colItems(c);
-  box.innerHTML=`<div class="chead"><button class="btn" data-cback>\u2190 ${ttl}</button><div><h2 class="sec">${esc(c.name)}</h2><div class="cs">${c.type?TL(c.type)+" collection \u00b7 ":""}${nt(L.length)}${L.length>1?" \u00b7 drag cards to arrange":""}</div></div>
-<div class="cact"><button class="btn red" data-cadd>+ Add titles</button><button class="btn" data-cren>Rename</button><button class="btn danger" data-cdel>Delete</button></div></div>
-<div class="grid dragok" style="--pp:${pp}">${L.length?L.map(card).join(""):`<div class="empty">This collection is empty. Tap \u201cAdd titles\u201d to pick some.</div>`}</div>`}
+  const c=cols.find(x=>x.id===colId),L=colItems(c),wd=L.filter(x=>x.status==="watched").length;
+  const gc={};L.forEach(x=>(x.genres||[]).forEach(g=>gc[g]=(gc[g]||0)+1));const tg=Object.keys(gc).sort((x,y)=>gc[y]-gc[x]).slice(0,4);
+  const tiles=L.length?Array.from({length:Math.max(4,Math.min(L.length,6))},(_,k)=>L[k%L.length]):[];
+  const lead=L.find(x=>x.img);
+  const desc=L.length?`${tg.length?tg.join(", ")+" \u2014 ":""}${wd} of ${L.length} watched.`:"Nothing here yet. Tap \u201cAdd titles\u201d to fill this collection.";
+  box.innerHTML=`<div class="chead"><button class="btn" data-cback>\u2190 ${ttl}</button><div class="cact"><button class="btn red" data-cadd>+ Add titles</button><button class="btn" data-cren>Rename</button><button class="btn danger" data-cdel>Delete</button></div></div>
+<div class="cban">${tiles.map(x=>x.img?`<img src="${x.img}" alt="">`:`<i></i>`).join("")}<div class="cbf"></div></div>
+<div class="chero"><div class="cpo">${lead?`<img src="${lead.img}" alt="">`:`<i></i>`}</div><div class="cmeta"><h2>${esc(c.name)}</h2><p>${esc(desc)}</p><div class="cs">${c.type?TL(c.type)+" collection \u00b7 ":""}${nt(L.length)}${L.length>1?" \u00b7 drag cards to arrange":""}</div></div></div>
+<div class="wgrid dragok">${L.length?L.map(wcard).join(""):""}</div>`}
 $("colsec").addEventListener("click",e=>{
   const b=e.target.closest("[data-cnew],[data-cgo],[data-col],[data-cback],[data-cadd],[data-cren],[data-cdel]");if(!b)return;
   const c=cols.find(x=>x.id===colId);
